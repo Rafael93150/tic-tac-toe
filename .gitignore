@@ -2,6 +2,7 @@
 /front/node_modules/
 /front/package-lock.json
 /back/package-lock.json
+/back/.env
 /.idea/git_toolbox_prj.xml
 skill-connect-carbon-cc382c68b243.json
 .idea
