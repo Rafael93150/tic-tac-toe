@@ -3,8 +3,8 @@
 Créé par:
 - Rafael93150, alias TAVARES DE PINHO Rafael
 - asma1mokeddes, alias MOKEDDES Asma
-- ..., alias TASLIMA Ahamed Mze
-- ..., alias DIKIADI NDONGALA VUANZA Bastien
+- Taslima-Ahamed-Mze, alias TASLIMA Ahamed Mze
+- Bass913, alias DIKIADI NDONGALA VUANZA Bastien
 
 ## Comptes pré-créés
 Pour faciliter les tests et la démonstration du projet, voici les comptes pré-créés avec leurs rôles respectifs et les mots de passe associés :
