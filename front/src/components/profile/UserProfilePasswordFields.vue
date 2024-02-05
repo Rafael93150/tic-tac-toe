@@ -22,20 +22,25 @@ const toggleEditing = async () => {
       passwordError.value = "Les mots de passe ne correspondent pas.";
       return;
     }
+    if (
+      !newPassword.value.length ||
+      !newPassword.value.length ||
+      !confirmPassword.value.length
+    ) {
+      passwordError.value = "Veuillez remplir tous les champs.";
+      return;
+    }
     try {
-      await axiosInstance.patch("/users/" + props.userId + "/password", {
+      await axiosInstance.patch("/users/" + props.userId, {
         oldPassword: oldPassword.value,
         newPassword: newPassword.value,
       });
       isEditing.value = false;
       confirmation.value = true;
     } catch (error: any) {
-      if (error.response.data.message === "Invalid password") {
-        passwordError.value = "L'ancien mot de passe ne correspond pas.";
-      } else if (error.response.data.message === "Invalid new password") {
-        passwordError.value =
-          "Le mot de passe doit contenir au moins 12 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.";
-      } else passwordError.value = error.response.data;
+      if (error.response.status === 401) {
+        passwordError.value = "Le mot de passe actuel est incorrect.";
+      }
     }
   } else {
     isEditing.value = true;

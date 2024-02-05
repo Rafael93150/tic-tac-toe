@@ -58,7 +58,7 @@ export const createUser = async (req, res) => {
 export const updateUser = async (req, res) => {
 	try {
 		const userId = req.params.userId;
-		const { username, email, role, password } = req.body;
+		const { username, email, role, password, newPassword, oldPassword } = req.body;
 
 		const user = await User.findById(userId);
 		if (!user) return res.sendStatus(404);
@@ -67,6 +67,11 @@ export const updateUser = async (req, res) => {
 		if (username) userQuery.username = username;
 		if (email) userQuery.email = email;
 		if (password) userQuery.password = await bcrypt.hash(password, 10);
+		if (newPassword && oldPassword) {
+			const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+			if (!isPasswordValid) return res.sendStatus(401);
+			userQuery.password = await bcrypt.hash(newPassword, 10);
+		}
 
 		await User.findByIdAndUpdate(userId, userQuery);
 		const updatedUser = await User.findById(userId).select("-password");

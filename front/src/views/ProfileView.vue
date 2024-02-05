@@ -102,36 +102,22 @@ state.user = JSON.parse(localStorage.getItem("user") || "{}");
                       Profil
                     </h3>
                     <p class="max-w-2xl text-sm text-gray-500">
-                      Ces informations seront affichées publiquement, alors
-                      soyez prudent en les partageant.
+                      Vous pouvez modifier votre profil à tout moment depuis cette page.
                     </p>
                   </div>
                   <div class="mt-6">
                     <dl class="divide-y divide-gray-200">
                       <UserProfileField
-                        :userId="state.user.id"
+                        :userId="state.user._id"
                         :model="fields.username"
                         v-model="state.user.username"
                       />
                     </dl>
                   </div>
-                </div>
-
-                <!-- Personnal informations -->
-                <div class="mt-10 divide-y divide-gray-200">
-                  <div class="space-y-1">
-                    <h3 class="text-lg font-medium leading-6 text-gray-900">
-                      Informations personnelles
-                    </h3>
-                    <p class="max-w-2xl text-sm text-gray-500">
-                      Ces informations sont personnelles et ne sont pas
-                      partagées publiquement.
-                    </p>
-                  </div>
-                  <div class="mt-6">
+                  <div>
                     <dl class="divide-y divide-gray-200">
                       <UserProfileField
-                        :userId="state.user.id"
+                        :userId="state.user._id"
                         :model="fields.email"
                         v-model="state.user.email"
                       />
@@ -157,7 +143,7 @@ state.user = JSON.parse(localStorage.getItem("user") || "{}");
                   </div>
                   <div class="mt-6">
                     <dl class="divide-y divide-gray-200">
-                      <UserProfilePasswordFields :userId="state.user.id" />
+                      <UserProfilePasswordFields :userId="state.user._id" />
                     </dl>
                   </div>
                 </div>
