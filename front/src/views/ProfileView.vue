@@ -157,7 +157,7 @@ state.user = JSON.parse(localStorage.getItem("user") || "{}");
                       Historique
                     </h3>
                     <p class="max-w-2xl text-sm text-gray-500">
-                      Retrouvez ici l'historique de vos commandes.
+                      Retrouvez ici l'historique de vos parties.
                     </p>
                   </div>
                   <!-- <div class="mt-6">

@@ -19,7 +19,9 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
 	console.log("User connected");
 
-	io.emit('userConnected', 'Un utilisateur s\'est connecté au chat');
+	socket.on("joinChat", (user) => {
+		io.emit("joinChat", user);
+	});
 
 	socket.on("newMessage", async (messageData) => {
 		try {

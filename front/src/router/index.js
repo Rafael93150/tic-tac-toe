@@ -62,7 +62,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.path !== "/login" && to.path !== "/register" && !isAuthenticated()) {
-    next("/login");
+    next({ name: "login" });
   } else {
     next();
   }
