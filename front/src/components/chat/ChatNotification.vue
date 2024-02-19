@@ -1,10 +1,10 @@
 <template>
 	<!-- user joining chat notification -->
-	<div v-if="notification.kind === 'connexion'" class="chat-notification">
+	<div class="chat-notification">
 		<div>
 			<div class="p-2 text-gray-400 text-xs font-normal">
 				<span>{{ notification.user.username }}</span>
-				<span> a rejoint le chat</span>
+				<span>{{ notification.kind === "connexion" ? " a rejoint le chat" : " a quitté le chat" }}</span>
 			</div>
 		</div>
 	</div>
@@ -19,6 +19,7 @@ const props = defineProps({
 });
 
 const notification = props.item.notification;
+console.log(notification.kind);
 </script>
 
 <style>

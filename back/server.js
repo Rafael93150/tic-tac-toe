@@ -16,10 +16,12 @@ const io = new Server(server, {
 	},
 });
 
+let usersLogged = [];
+
 io.on("connection", (socket) => {
-	console.log("User connected");
 
 	socket.on("joinChat", (user) => {
+		usersLogged.push({ ...user, socketId: socket.id });
 		io.emit("joinChat", user);
 	});
 
@@ -66,7 +68,9 @@ io.on("connection", (socket) => {
 	});
 
 	socket.on("disconnect", () => {
-		console.log("User disconnected");
+		const userDisconnected = usersLogged.find((user) => user.socketId === socket.id);
+		usersLogged = usersLogged.filter((user) => user.socketId !== socket.id);
+		io.emit("leaveChat", userDisconnected);
 	});
 });
 
