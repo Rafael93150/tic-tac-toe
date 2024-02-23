@@ -15,13 +15,9 @@ const state = reactive({
 	items: [] as { message: any; notification: any }[],
 });
 
-// const reversedItems = computed(() => {
-// 	const reverse = state.items.slice().reverse()
-// 	console.log(reverse);
-// 	return reverse;
-// });
-
-const reversedItems = computed(() => state.items.slice().reverse());
+const reversedItems = computed(() => {
+	return state.items.slice().reverse();
+});
 
 axiosInstance.get("/messages/populated").then((response) => {
 	state.items = response.data.map((message) => ({
@@ -123,8 +119,8 @@ onBeforeUnmount(() => {
 		<div class="chat">
 			<div class="chat-messages">
 				<component
-					v-for="(item, index) in reversedItems"
-					:key="index"
+					v-for="item in reversedItems"
+					:key="item.message?._id || item.notification?.date"
 					:is="item.message ? ChatMessage : ChatNotification"
 					:item="item"
 					@delete-message="deleteMessage"

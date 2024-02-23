@@ -19,7 +19,6 @@ const props = defineProps({
 });
 
 const notification = props.item.notification;
-console.log(notification.kind);
 </script>
 
 <style>
