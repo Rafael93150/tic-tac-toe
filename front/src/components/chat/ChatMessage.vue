@@ -18,7 +18,6 @@
 						? message.fromUser.username
 						: "Utilisateur supprimé"
 				}}
-				{{ message.fromUser?.lastname }}
 				<small class="text-gray-400 text-xs ml-3 font-normal">{{
 					formatDate(message.createdAt)
 				}}</small></span
@@ -95,8 +94,7 @@ const isCurrentUserMessage = () => {
 };
 const isCurrentUserAdmin = () => {
 	return (
-		mainStore.currentUser.role === "admin" ||
-		mainStore.currentUser.role === "rh"
+		mainStore.currentUser.role === "ROLE_USER"
 	);
 };
 const deleteMessage = () => {

@@ -36,7 +36,7 @@ state.user = JSON.parse(localStorage.getItem("user") || "{}");
 
 <template>
   <LayoutAuthenticated>
-    <div v-if="state.user" class="flex-1 max-w-7xl mx-auto my-8">
+    <div v-if="state.user" class="flex-1 max-w-7xl mx-auto my-8 px-4 sm:px-6 lg:px-8">
       <div class="relative px-0 sm:px-6">
         <div class="pb-16 pt-4">
           <div class="px-4 sm:px-6 lg:px-0">

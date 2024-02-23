@@ -1,20 +1,10 @@
 import Message from "../models/message.js";
 
-export const getAllMessages = async (req, res) => {
+export const getChatMessages = async (req, res) => {
 	try {
-		const messages = await Message.find();
-		res.json(messages);
-	} catch (err) {
-		res.status(500).json({
-			message:
-				"Une erreur est survenue lors de la récupération des messages.",
-		});
-	}
-};
-
-export const getAllMessagesWithUserDetails = async (req, res) => {
-	try {
-		const messages = await Message.find().populate(
+		const messages = await Message.find({
+			toRoom: null,
+		}).populate(
 			"fromUser",
 			"username color"
 		);
@@ -26,6 +16,23 @@ export const getAllMessagesWithUserDetails = async (req, res) => {
 		});
 	}
 };
+
+export const getRoomMessages = async (req, res) => {
+	try {
+		const messages = await Message.find({
+			toRoom: req.params.roomId,
+		}).populate(
+			"fromUser",
+			"username color"
+		);
+		res.json(messages);
+	} catch (err) {
+		res.status(500).json({
+			message:
+				`Une erreur est survenue lors de la récupération des messages : ${err}`
+		});
+	}
+}
 
 export const getMessageById = async (req, res) => {
 	try {
@@ -62,13 +69,11 @@ export const getMessageByIdWithUserDetails = async (req, res) => {
 
 export const createMessage = async (req, res) => {
 	try {
-		const { fromUser, toUser, text, images, files } = req.body;
+		const { fromUser, toRoom, text } = req.body;
 		const newMessage = new Message({
 			fromUser,
-			toUser,
+			toRoom,
 			text,
-			images,
-			files,
 		});
 		const savedMessage = await newMessage.save();
 		res.status(201).json(savedMessage);

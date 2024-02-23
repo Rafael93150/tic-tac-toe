@@ -19,7 +19,7 @@ const reversedItems = computed(() => {
 	return state.items.slice().reverse();
 });
 
-axiosInstance.get("/messages/populated").then((response) => {
+axiosInstance.get("/messages/").then((response) => {
 	state.items = response.data.map((message) => ({
 		message,
 		notification: null,
@@ -116,7 +116,7 @@ onBeforeUnmount(() => {
 
 <template>
 	<LayoutAuthenticated>
-		<div class="chat">
+		<div class="messages-container px-4 sm:px-6 lg:px-8 flex flex-col py-4">
 			<div class="chat-messages">
 				<component
 					v-for="item in reversedItems"
@@ -127,16 +127,18 @@ onBeforeUnmount(() => {
 					@edit-message="saveEditedMessage"
 				/>
 			</div>
-			<ChatInput @send-message="handleSendMessage" />
+			<ChatInput @send-message="handleSendMessage" class="mt-auto"/>
 		</div>
 	</LayoutAuthenticated>
 </template>
 
 <style>
+.messages-container {
+	height: 100vh;
+}
 .chat-messages {
 	display: flex;
 	flex-direction: column-reverse;
-	height: calc(100vh - 150px);
 	overflow-y: auto;
 }
 </style>

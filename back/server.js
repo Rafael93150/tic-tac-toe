@@ -19,7 +19,6 @@ const io = new Server(server, {
 let usersLogged = [];
 
 io.on("connection", (socket) => {
-
 	socket.on("joinChat", (user) => {
 		usersLogged.push({ ...user, socketId: socket.id });
 		io.emit("joinChat", user);
@@ -27,14 +26,12 @@ io.on("connection", (socket) => {
 
 	socket.on("newMessage", async (messageData) => {
 		try {
-			const { fromUser, toUser, text, images, files } = messageData;
+			const { fromUser, toRoom, text } = messageData;
 
 			const newMessage = new Message({
 				fromUser,
-				toUser,
+				toRoom,
 				text,
-				images,
-				files,
 			});
 
 			const savedMessage = await newMessage.save();
@@ -68,7 +65,9 @@ io.on("connection", (socket) => {
 	});
 
 	socket.on("disconnect", () => {
-		const userDisconnected = usersLogged.find((user) => user.socketId === socket.id);
+		const userDisconnected = usersLogged.find(
+			(user) => user.socketId === socket.id
+		);
 		usersLogged = usersLogged.filter((user) => user.socketId !== socket.id);
 		io.emit("leaveChat", userDisconnected);
 	});
