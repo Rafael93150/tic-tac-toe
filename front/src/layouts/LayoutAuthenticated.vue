@@ -21,16 +21,12 @@ const router = useRouter();
 const user = JSON.parse(localStorage.getItem("user") || "{}");
 const navigation = [
 	{
-		name: "Accueil",
-		href: "/",
-		icon: HomeIcon,
-		current: router.currentRoute.value.path === "/",
-	},
-	{
 		name: "Morpion",
-		href: "/tic-tac-toe",
+		href: "/",
 		icon: PlayIcon,
-		current: router.currentRoute.value.path === "/tic-tac-toe",
+		current:
+			router.currentRoute.value.path === "/" ||
+			router.currentRoute.value.path.includes("/game/"),
 	},
 	{
 		name: "Chat",

@@ -13,7 +13,7 @@ const state: {
   tabs: [
     { name: "Compte", href: "#", current: true },
     { name: "Mot de passe", href: "#", current: false },
-    { name: "Historique", href: "#", current: false },
+    { name: "Historique des parties", href: "#", current: false },
   ],
   currentModifications: {
     username: false,
@@ -154,7 +154,7 @@ state.user = JSON.parse(localStorage.getItem("user") || "{}");
                 <div class="mt-10">
                   <div class="space-y-1">
                     <h3 class="text-lg font-medium leading-6 text-gray-900">
-                      Historique
+                      Historique des parties
                     </h3>
                     <p class="max-w-2xl text-sm text-gray-500">
                       Retrouvez ici l'historique de vos parties.

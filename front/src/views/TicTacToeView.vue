@@ -1,78 +1,67 @@
-<script setup lang="ts">
+<script setup>
 import LayoutAuthenticated from "@/layouts/LayoutAuthenticated.vue";
-import GameMessage from "@/components/game/GameMessage.vue";
-import ChatInput from "@/components/chat/ChatInput.vue";
+import SidebarChat from "@/components/game/SidebarChat.vue";
+import GameBoard from "@/components/game/GameBoard.vue";
+import GameStarter from "@/components/game/GameStarter.vue";
 import { useMainStore } from "@/stores/main";
-import io from "socket.io-client";
-import { computed, reactive } from "vue";
-import axiosInstance from "@/utils/axiosInstance";
+import { onMounted, reactive } from "vue";
+import { useRouter } from "vue-router";
 
 const mainStore = useMainStore();
-const socket = io("http://localhost:3000");
+const router = useRouter();
 
 const state = reactive({
-	messages: [],
+	currentGame: null,
 });
 
-const currentUser = mainStore.currentUser;
-
-const reversedMessages = computed(() => {
-	return state.messages.slice().reverse();
-});
-
-axiosInstance
-	.get("/messages/room/609f20a28416c40a7026d1cb")
-	.then((response) => {
-		state.messages = response.data;
-	});
-
-socket.on("newMessage", (message) => {
-	state.messages.push(message);
-});
-
-const handleSendMessage = (message) => {
-	socket.emit("newMessage", {
-		fromUser: currentUser,
-		text: message,
-	});
+const handleGameCreated = (game) => {
+	state.currentGame = game;
+	router.push(`/game/${state.currentGame.roomId}`);
 };
+
+const handleGameLeaved = () => {
+	state.currentGame = null;
+	router.push("/");
+};
+
+const handleGameJoined = (game) => {
+	state.currentGame = game;
+	router.push(`/game/${game.roomId}`);
+};
+
+onMounted(async () => {
+	state.currentGame = await mainStore.fetchCurrentGame();
+	if (state.currentGame) {
+		router.push(`/game/${state.currentGame.roomId}`);
+	}
+});
 </script>
 
 <template>
 	<LayoutAuthenticated>
-		<div class="flex flex-row w-full h-full">
-			<!-- Game -->
+		<div v-if="state.currentGame" class="flex flex-row w-full h-full">
 			<div class="flex-1 flex flex-col items-center justify-center">
-				Morpion
-			</div>
-			<!-- Messages -->
-			<div
-				class="messages-container w-72 bg-purple-50 px-4 border-l border-gray-200 flex flex-col py-5"
-			>
-				<div class="chat-messages">
-					<GameMessage
-						v-for="message in reversedMessages"
-						:key="message._id"
-						:message="message"
-					/>
+				<!-- Informations liées à la partie -->
+				<div
+					class="flex flex-col items-center justify-center w-full max-w-md"
+				>
+					<h1 class="text-3xl font-bold text-center">Morpion</h1>
 				</div>
-				<ChatInput
-					@send-message="handleSendMessage"
-					:isChatInput="false"
-					class="mt-auto"
-				/>
+				<!-- Plateau de jeu -->
+				<GameBoard @game-leaved="handleGameLeaved" />
 			</div>
+			<SidebarChat :room="state.currentGame" />
 		</div>
+		<GameStarter
+			v-else
+			@game-created="handleGameCreated"
+			@game-joined="handleGameJoined"
+		/>
 	</LayoutAuthenticated>
 </template>
 
 <style>
-.messages-container {
+.container {
 	height: 100vh;
-}
-.chat-messages {
-	display: flex;
-	flex-direction: column-reverse;
-	overflow-y: auto;
 }
 </style>
