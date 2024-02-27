@@ -33,6 +33,8 @@ onMounted(async () => {
 	state.currentGame = await mainStore.fetchCurrentGame();
 	if (state.currentGame) {
 		router.push(`/game/${state.currentGame.roomId}`);
+	} else {
+		router.push("/");
 	}
 });
 </script>
