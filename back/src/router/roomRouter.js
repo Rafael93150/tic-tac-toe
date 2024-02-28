@@ -1,11 +1,11 @@
 import express from "express";
 import {
-	createRoom,
-	getCurrentRoom,
-	joinRoom,
-	leaveRoom,
+    createRoom,
+    getCurrentRoom,
+    joinRoom,
+    leaveRoom,
 } from "../routes/roomRoutes.js";
-import authMiddleware from "../middlewares/authMiddleware.js";
+import { authMiddleware } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 

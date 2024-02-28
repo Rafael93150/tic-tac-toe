@@ -50,6 +50,14 @@ const routes = [
 		name: "tic-tac-toe",
 		component: () => import("@/views/TicTacToeView.vue"),
 	},
+	{
+		meta: {
+			title: "Notifications",
+		},
+		path: "/notifications",
+		name: "notifications",
+		component: () => import("@/views/Notification.vue"),
+	},
 ];
 
 const router = createRouter({
