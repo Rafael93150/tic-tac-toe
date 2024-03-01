@@ -59,7 +59,7 @@ const choosePredefinedMessage = (selectedMessage) => {
 			required
 		/>
 		<!-- bouton qui ouvre une modal pour choisir un message prédéfini -->
-		<div class="absolute right-2 top-2">
+		<div class="absolute top-1/2 transform -translate-y-1/2" :class="props.isGlobalChat ? 'right-24' : 'right-2'">
 			<div class="relative">
 				<button
 					@click="
@@ -69,9 +69,12 @@ const choosePredefinedMessage = (selectedMessage) => {
 					:class="
 						props.isGlobalChat
 							? 'text-sm px-1 py-2'
-							: 'text-xs px-0.5 py-1'"
+							: 'text-xs px-0.5 py-1.5'
+					"
 				>
-					<EllipsisVerticalIcon :class="props.isGlobalChat ? 'w-6 h-6' : 'w-5 h-5'" />
+					<EllipsisVerticalIcon
+						:class="props.isGlobalChat ? 'w-6 h-6' : 'w-5 h-5'"
+					/>
 				</button>
 				<div
 					v-if="openPersonalMessageModal"
@@ -87,7 +90,11 @@ const choosePredefinedMessage = (selectedMessage) => {
 						:key="message"
 						@click="choosePredefinedMessage(message)"
 						class="text-gray-600 bg-purple-50 cursor-pointer my-1 hover:bg-purple-100"
-						:class="props.isGlobalChat ? 'px-2 py-1 text-sm rounded-lg' : 'px-1 py-0.5 text-xs rounded-md'"
+						:class="
+							props.isGlobalChat
+								? 'px-2 py-1 text-sm rounded-lg'
+								: 'px-1 py-0.5 text-xs rounded-md'
+						"
 					>
 						{{ message }}
 					</p>
@@ -95,12 +102,12 @@ const choosePredefinedMessage = (selectedMessage) => {
 			</div>
 		</div>
 
-		<!-- <button
+		<button
 			v-if="props.isGlobalChat"
 			@click="sendMessage"
-			class="text-white absolute right-2.5 bottom-2.5 bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-4 py-2"
+			class="text-white absolute right-2 bottom-2.5 bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-4 py-2"
 		>
 			Envoyer
-		</button> -->
+		</button>
 	</div>
 </template>
