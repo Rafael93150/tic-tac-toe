@@ -13,7 +13,7 @@ const store = useMainStore();
 
 const roomCode = ref(null);
 
-const emit = defineEmits(["game-created"]);
+const emit = defineEmits(["game-created", "game-joined"]);
 
 const createGame = () => {
 	axiosInstance.post("/rooms").then((response) => {

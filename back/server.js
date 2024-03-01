@@ -71,6 +71,14 @@ io.on("connection", (socket) => {
 		usersLogged = usersLogged.filter((user) => user.socketId !== socket.id);
 		io.emit("leaveChat", userDisconnected);
 	});
+
+	socket.on("userJoinedGame", ({ roomId, user }) => {
+		io.emit("userJoinedGame", { roomId, user });
+	});
+
+	socket.on("userLeftGame", ({ roomId, user }) => {
+		io.emit("userLeftGame", { roomId, user });
+	});
 });
 
 app.set("socketio", io);

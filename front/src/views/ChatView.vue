@@ -127,7 +127,7 @@ onBeforeUnmount(() => {
 					@edit-message="saveEditedMessage"
 				/>
 			</div>
-			<ChatInput @send-message="handleSendMessage" class="mt-auto"/>
+			<ChatInput @send-message="handleSendMessage" class="mt-auto" />
 		</div>
 	</LayoutAuthenticated>
 </template>

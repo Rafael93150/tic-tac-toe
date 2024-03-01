@@ -1,3 +1,4 @@
+import User from "../models/user.js";
 import Room from "../models/room.js";
 import randomCharacters from "../lib/randomCharacters.js";
 
@@ -6,7 +7,11 @@ export const createRoom = async (req, res) => {
 		const roomId = randomCharacters(6);
 		const room = new Room({ roomId, players: [req.user.userId] });
 		await room.save();
-		res.status(201).json(room);
+		const createdRoom = await Room.findOne({ roomId }).populate(
+			"players",
+			"username color"
+		);
+		res.status(201).json(createdRoom);
 	} catch (error) {
 		res.status(500).json({
 			error: `An error occurred while creating room: ${error}`,
@@ -26,7 +31,10 @@ export const joinRoom = async (req, res) => {
 			}
 			room.players.push(req.user.userId);
 			await room.save();
-			res.status(200).json(room);
+			const joinedRoom = await Room.findOne({
+				roomId: req.params.roomId,
+			}).populate("players", "username color");
+			res.status(200).json(joinedRoom);
 		} else {
 			res.status(404).json({ error: "Room not found" });
 		}
@@ -42,7 +50,7 @@ export const getCurrentRoom = async (req, res) => {
 		const room = await Room.findOne({
 			players: req.user.userId,
 			gameOver: false,
-		});
+		}).populate("players", "username");
 		if (room) {
 			res.status(200).json(room);
 		} else {
@@ -63,7 +71,7 @@ export const leaveRoom = async (req, res) => {
 		});
 		if (room) {
 			room.gameOver = true;
-			if (room.players.length === 1) {
+			if (room.players.length < 2) {
 				await Room.findByIdAndDelete(room._id);
 				return res.status(200).json({ message: "Room deleted" });
 			}

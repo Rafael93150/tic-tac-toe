@@ -11,6 +11,7 @@ const socket = io("http://localhost:3000");
 
 const state = reactive({
 	messages: [],
+	otherUser: null,
 });
 
 const props = defineProps({
@@ -19,6 +20,10 @@ const props = defineProps({
 		required: true,
 	},
 });
+
+state.otherUser = props.room.players.find(
+	(user) => user._id !== mainStore.currentUser._id
+);
 
 const currentUser = mainStore.currentUser;
 
@@ -48,7 +53,11 @@ const handleSendMessage = (message) => {
 		class="messages-container w-72 bg-purple-50 px-4 border-l border-gray-200 flex flex-col py-5"
 	>
 		<p class="text-gray-800 text-sm font-semibold mb-2">
-			Discutez avec ...
+			{{
+				state.otherUser
+					? `Discutez avec ${state.otherUser.username}`
+					: "En attente de joueur..."
+			}}
 		</p>
 		<div class="chat-messages">
 			<GameMessage
@@ -59,7 +68,7 @@ const handleSendMessage = (message) => {
 		</div>
 		<ChatInput
 			@send-message="handleSendMessage"
-			:isChatInput="false"
+			:isGlobalChat="false"
 			class="mt-auto"
 		/>
 	</div>

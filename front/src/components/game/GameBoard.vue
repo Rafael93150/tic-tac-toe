@@ -1,27 +1,11 @@
 <script setup>
-import { useRouter } from "vue-router";
-import { useMainStore } from "@/stores/main";
-
-const mainStore = useMainStore();
-const router = useRouter();
-
-const emit = defineEmits(["game-leaved"]);
-
-const leaveGame = () => {
-	mainStore.leaveGame();
-	emit("game-leaved");
-};
+const props = defineProps({
+	board: Array,
+});
 </script>
 
 <template>
-	### Plateau de jeu ###
-	<!-- bouton abandonner -->
-	<div class="flex justify-center">
-		<button
-			class="px-4 py-2 mt-4 text-white bg-red-600 rounded-md hover:bg-red-500"
-			@click="leaveGame"
-		>
-			Abandonner
-		</button>
+	<div class="h-96 w-96 bg-gray-50 border-2 border-gray-300 justify-center items-center flex">
+		### Plateau de jeu ###
 	</div>
 </template>
