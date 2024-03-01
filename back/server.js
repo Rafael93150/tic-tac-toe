@@ -2,6 +2,7 @@ import app from "./app.js";
 import http from "http";
 import { Server } from "socket.io";
 import Message from "./src/models/message.js";
+import { play } from "./src/services/gameService.js";
 
 const PORT = process.env.PORT || 3000;
 app.set("port", PORT);
@@ -78,6 +79,11 @@ io.on("connection", (socket) => {
 
 	socket.on("userLeftGame", ({ roomId, user }) => {
 		io.emit("userLeftGame", { roomId, user });
+	});
+
+	socket.on("playerPlayed", async ({ userId, row, col }) => {
+		const room = await play({ userId, row, col });
+		io.emit("playerPlayed", room);
 	});
 });
 

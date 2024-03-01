@@ -1,4 +1,3 @@
-import User from "../models/user.js";
 import Room from "../models/room.js";
 import randomCharacters from "../lib/randomCharacters.js";
 
@@ -26,10 +25,17 @@ export const joinRoom = async (req, res) => {
 			gameOver: false,
 		});
 		if (room) {
-			if (room.players.length === 2) {
+			if (room.players.length >= 2) {
 				return res.status(400).json({ error: "Room is full" });
 			}
 			room.players.push(req.user.userId);
+
+			// randomize the order of the players
+			if (Math.random() < 0.5) {
+				room.players.reverse();
+			}
+			room.activePlayer = room.players[0];
+
 			await room.save();
 			const joinedRoom = await Room.findOne({
 				roomId: req.params.roomId,
@@ -50,7 +56,7 @@ export const getCurrentRoom = async (req, res) => {
 		const room = await Room.findOne({
 			players: req.user.userId,
 			gameOver: false,
-		}).populate("players", "username");
+		}).populate("players", "username color");
 		if (room) {
 			res.status(200).json(room);
 		} else {

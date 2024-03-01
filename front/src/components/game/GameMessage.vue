@@ -1,6 +1,8 @@
 <template>
 	<div class="py-0.5">
-		<span class="text-gray-800 text-sm font-semibold"
+		<span
+			class="text-sm font-semibold"
+			:style="{ color: message.fromUser.color }"
 			>{{ message.fromUser.username }}
 			<small class="text-gray-400 text-xs ml-1 font-normal">{{
 				formatDate(message.createdAt, true)
