@@ -1,9 +1,9 @@
 import express from "express";
 import {
-	createRoom,
-	getCurrentRoom,
-	joinRoom,
-	leaveRoom,
+    createRoom,
+    getCurrentRoom,
+    joinRoom,
+    leaveRoom,
 } from "../routes/roomRoutes.js";
 
 const router = express.Router();

@@ -9,12 +9,12 @@ import {
 import {
 	Bars3Icon,
 	ChatBubbleLeftRightIcon,
-	HomeIcon,
 	PlayIcon,
 	UserIcon,
 	XMarkIcon,
 	ArrowRightStartOnRectangleIcon,
 } from "@heroicons/vue/24/outline";
+
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -33,6 +33,12 @@ const navigation = [
 		href: "/chat",
 		icon: ChatBubbleLeftRightIcon,
 		current: router.currentRoute.value.path === "/chat",
+	},
+	{
+		name: "Notifications",
+		href: "/notifications",
+		icon: ChatBubbleLeftRightIcon,
+		current: router.currentRoute.value.path === "/notifications",
 	},
 ];
 
@@ -216,6 +222,7 @@ const sidebarOpen = ref(false);
 								/>
 								{{ user.username }}
 							</a>
+							
 							<a
 								type="button"
 								@click="logout"
