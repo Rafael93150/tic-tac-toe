@@ -20,13 +20,13 @@ app.use("/messages", authMiddleware, messages);
 app.use("/users", authMiddleware, users);
 app.use("/rooms", authMiddleware, rooms);
 
-removeDeletedUsersMessages();
-
 try {
 	await mongoose.connect(process.env.DB_URI);
 	console.log("Connected to database");
 } catch (e) {
 	console.error(e);
 }
+
+removeDeletedUsersMessages();
 
 export default app;

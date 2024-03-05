@@ -5,13 +5,12 @@ import {
 	joinRoom,
 	leaveRoom,
 } from "../routes/roomRoutes.js";
-import authMiddleware from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-router.post("/", authMiddleware, createRoom);
-router.get("/current", authMiddleware, getCurrentRoom);
-router.post("/leave", authMiddleware, leaveRoom);
-router.post("/join/:roomId", authMiddleware, joinRoom);
+router.post("/", createRoom);
+router.get("/current", getCurrentRoom);
+router.post("/leave", leaveRoom);
+router.post("/join/:roomId", joinRoom);
 
 export default router;
