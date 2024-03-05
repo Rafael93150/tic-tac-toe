@@ -37,7 +37,7 @@ const joinGame = () => {
 				Trouvez une partie
 			</h1>
 			<div
-				class="flex flex-col items-center justify-center w-full mt-6 rounded-md bg-white shadow-md p-6 bg-purple-50"
+				class="flex flex-col items-center justify-center w-full mt-6 rounded-md shadow-md p-6 bg-purple-50"
 			>
 				<!-- Create a party -->
 				<div class="flex-col">

@@ -23,3 +23,17 @@ export const play = async (req, res) => {
 		});
 	}
 };
+
+export const getGamesHistory = async (req, res) => {
+	try {
+		const gamesHistory = await Room.find({
+			players: req.user.userId,
+			gameOver: true,
+		}).populate("players", "username color");
+		res.status(200).json(gamesHistory);
+	} catch (error) {
+		res.status(500).json({
+			error: `An error occurred while getting games history: ${error}`,
+		});
+	}
+}
