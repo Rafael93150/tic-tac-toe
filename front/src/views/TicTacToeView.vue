@@ -73,7 +73,6 @@ const isGameStarted = computed(() => {
 });
 
 const playerTurn = computed(() => {
-	console.log(state.currentGame);
 	return state.currentGame.players.find(
 		(player) => player._id === state.currentGame.activePlayer
 	);
