@@ -13,19 +13,15 @@ export const play = async ({ userId, row, col }) => {
 	if (room.gameBoard[row][col] !== "") return { error: "Invalid move" };
 	room.gameBoard[row][col] =
 		userId === room.players[0]._id.toString() ? "X" : "O";
-	room.activePlayer = new Types.ObjectId(
-		room.players.find((player) => player._id.toString() !== userId)
-	);
-
 	const gameOver = isGameOver(room.gameBoard);
 	if (gameOver) {
 		room.gameOver = true;
-		const winner = room.players.find(
-			(player) => player._id.toString() !== userId
+		room.winner = room.activePlayer;
+	} else {
+		room.activePlayer = new Types.ObjectId(
+			room.players.find((player) => player._id.toString() !== userId)
 		);
-		room.winner = winner;
 	}
-
 	await room.save();
 
 	return room;
