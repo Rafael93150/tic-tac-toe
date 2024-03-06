@@ -10,45 +10,14 @@ const currentUser = mainStore.currentUser;
 const gamesHistory = reactive([]);
 
 onMounted(() => {
-	// axiosInstance
-	// 	.get(`/game/history`)
-	// 	.then((response) => {
-	// 		gamesHistory = response.data;
-	// 	})
-	// 	.catch((error) => {
-	// 		console.log(error);
-	// 	});
-
-	gamesHistory.push(
-		{
-			_id: "1",
-			createdAt: "2021-10-01T00:00:00.000Z",
-			winner: currentUser._id,
-			players: [
-				{ _id: currentUser._id, username: "User" },
-				{ _id: "2", username: "user2", color: "#ff0000" },
-			],
-			gameBoard: [
-				["X", "", "O"],
-				["", "X", "O"],
-				["", "O", "X"],
-			],
-		},
-		{
-			_id: "2",
-			createdAt: "2021-10-02T00:00:00.000Z",
-			winner: "2",
-			players: [
-				{ _id: "3", username: "user3", color: "#00ff00" },
-				{ _id: currentUser._id, username: "User" },
-			],
-			gameBoard: [
-				["O", "X", "X"],
-				["", "O", ""],
-				["X", "", "O"],
-			],
-		}
-	);
+	axiosInstance
+		.get(`/games/history`)
+		.then((response) => {
+			gamesHistory.push(...response.data);
+		})
+		.catch((error) => {
+			console.log(error);
+		});
 });
 
 const otherPlayer = (game) => {

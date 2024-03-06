@@ -16,8 +16,7 @@ export const register = async (req, res) => {
 
         const existingUser = await User.findOne({ email });
         if (existingUser)
-            await User.findByIdAndDelete(existingUser._id);
-        //return res.sendStatus(409);
+            return res.sendStatus(409);
 
         const authentificationToken = randomCharacters(6);
 

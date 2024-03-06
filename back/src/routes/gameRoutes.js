@@ -29,7 +29,10 @@ export const getGamesHistory = async (req, res) => {
 		const gamesHistory = await Room.find({
 			players: req.user.userId,
 			gameOver: true,
-		}).populate("players", "username color");
+			winner: { $ne: null },
+		})
+		.sort({ createdAt: -1 })
+		.populate("players", "username color");
 		res.status(200).json(gamesHistory);
 	} catch (error) {
 		res.status(500).json({

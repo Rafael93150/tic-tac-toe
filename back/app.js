@@ -4,6 +4,7 @@ import auth from "./src/router/authRouter.js";
 import messages from "./src/router/messagesRouter.js";
 import users from "./src/router/userRouter.js";
 import rooms from "./src/router/roomRouter.js";
+import games from "./src/router/gameRouter.js";
 import notifications from "./src/router/notificationRouter.js";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -24,6 +25,7 @@ app.use("/messages", authMiddleware, messages);
 app.use("/users", authMiddleware, users);
 app.use("/rooms", authMiddleware, rooms);
 app.use("/notifications", authMiddleware, notifications);
+app.use("/games", authMiddleware, games);
 
 try {
     await mongoose.connect(process.env.DB_URI);
