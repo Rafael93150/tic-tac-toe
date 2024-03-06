@@ -40,7 +40,7 @@ const handleGameJoined = (game) => {
 	router.push(`/game/${game.roomId}`);
 	state.currentGame = game;
 	socket.emit("userJoinedGame", {
-		roomId: game.roomId,
+		room: game,
 		user: mainStore.currentUser,
 	});
 };
@@ -54,13 +54,9 @@ onMounted(async () => {
 	}
 });
 
-socket.on("userJoinedGame", ({ roomId, user }) => {
-	if (
-		roomId !== state.currentGame.roomId ||
-		user._id === mainStore.currentUser._id
-	)
-		return;
-	state.currentGame.players.push(user);
+socket.on("userJoinedGame", ({ room, user }) => {
+	if (room.roomId !== state.currentGame.roomId) return;
+	state.currentGame = room;
 });
 
 socket.on("userLeftGame", ({ roomId, user }) => {
@@ -77,6 +73,7 @@ const isGameStarted = computed(() => {
 });
 
 const playerTurn = computed(() => {
+	console.log(state.currentGame);
 	return state.currentGame.players.find(
 		(player) => player._id === state.currentGame.activePlayer
 	);

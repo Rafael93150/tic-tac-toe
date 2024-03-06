@@ -71,8 +71,8 @@ io.on("connection", (socket) => {
 		}
 	});
 
-	socket.on("userJoinedGame", ({ roomId, user }) => {
-		io.emit("userJoinedGame", { roomId, user });
+	socket.on("userJoinedGame", ({ room, user }) => {
+		io.emit("userJoinedGame", { room, user });
 	});
 
 	socket.on("userLeftGame", ({ roomId, user }) => {
