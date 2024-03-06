@@ -18,11 +18,12 @@ const io = new Server(server, {
 });
 
 let usersLoggedInChat = [];
-let usersLogged = [];
+const usersLogged = [];
 
 io.on("connection", (socket) => {
 	socket.on("userLogged", (user) => {
 		usersLogged.push({ ...user, socketId: socket.id });
+		console.log(usersLogged);
 	});
 
 	socket.on("joinChat", (user) => {
@@ -93,14 +94,18 @@ io.on("connection", (socket) => {
 	});
 
 	socket.on("disconnect", () => {
-		const userDisconnected = usersLoggedInChat.find(
+		const userDisconnectedFromChat = usersLoggedInChat.find(
 			(user) => user.socketId === socket.id
 		);
-		usersLogged.splice(usersLogged.indexOf(socket.id), 1);
 		usersLoggedInChat = usersLoggedInChat.filter(
 			(user) => user.socketId !== socket.id
 		);
-		io.emit("leaveChat", userDisconnected);
+		io.emit("leaveChat", userDisconnectedFromChat);
+
+		const userIndex = usersLogged.findIndex(user => user.socketId === socket.id);
+		if (userIndex !== -1) {
+			usersLogged.splice(userIndex, 1);
+		}
 	});
 });
 

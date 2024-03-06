@@ -120,8 +120,10 @@ const sidebarOpen = ref(false);
 
 							<!-- Sidebar component, swap this element with another sidebar if you like -->
 							<div
-								class="flex grow flex-col gap-y-5 overflow-y-auto bg-primary px-6 pb-2 ring-1 ring-white/10"
+								class="flex grow flex-col gap-y-5 overflow-y-auto px-6 pb-2 ring-1 ring-white/10 bg-purple-50 relative z-10"
 							>
+								<XMarkIcon class="h-6 w-6 absolute rigth-5 top-5 cursor-pointer hover:bg-indigo-100
+								" @click="sidebarOpen=false" aria-hidden="true" />
 								<RouterLink
 									to="/"
 									class="flex h-16 shrink-0 items-center mt-4"
@@ -145,8 +147,8 @@ const sidebarOpen = ref(false);
 														:href="item.href"
 														:class="[
 															item.current
-																? 'bg-primary-light text-white'
-																: 'text-secondary-light hover:text-white hover:bg-primary-light',
+																? 'text-indigo-500'
+																: 'hover:bg-indigo-100',
 															'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
 														]"
 													>
