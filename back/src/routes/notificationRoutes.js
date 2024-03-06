@@ -1,4 +1,4 @@
-import { usersActifs, io } from "../../server.js";
+import { usersLogged, io } from "../../server.js";
 
 export const sendNotification = async (req, res) => {
     try {
@@ -9,7 +9,7 @@ export const sendNotification = async (req, res) => {
         /** 
          * Cibler client :
          * if (recipient) {
-            const user = usersActifs.find((user) => user.id === recipient);
+            const user = usersLogged.find((user) => user.id === recipient);
             if (!user)
                 return res.status(404).json({ error: "Recipient not found" });
 
@@ -21,7 +21,7 @@ export const sendNotification = async (req, res) => {
             res.status(200).json({
                 message: "Notification sent successfully.",
         }); */
-        /* usersActifs.forEach((user) => {
+        /* usersLogged.forEach((user) => {
             io.to(user.socketId).emit("sendNotification", {
                 message,
             });
@@ -37,7 +37,7 @@ export const sendNotification = async (req, res) => {
 
 export const getConnectedUsers = async (req, res) => {
     try {
-        res.json(usersActifs);
+        res.json(usersLogged);
     } catch (error) {
         console.error("Error fetching connected users:", error);
         res.status(500).json({ message: "Internal Server Error" });

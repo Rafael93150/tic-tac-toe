@@ -56,7 +56,7 @@ const routes = [
 		},
 		path: "/notifications",
 		name: "notifications",
-		component: () => import("@/views/Notification.vue"),
+		component: () => import("@/views/NotificationView.vue"),
 	},
 ];
 

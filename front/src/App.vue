@@ -1,20 +1,9 @@
 <script setup>
 import { RouterView } from "vue-router";
-import NotificationModal from "./components/modals/NotificationModal.vue";
-import { ref } from "vue";
-
-const showNotificationModal = ref(false);
-</script>
-
-<template>
-  <RouterView />
-  <NotificationModal v-show="showNotificationModal" :closingTime="3000" :message="'Vous avez reçu cette notification car vous allez bientôt être déconnecté'"/>
-</template>
-
-<script setup>
-import { onBeforeUnmount, onMounted } from 'vue';
-import io from 'socket.io-client';
+import { onBeforeUnmount, onMounted, ref } from "vue";
+import io from "socket.io-client";
 import { useMainStore } from "@/stores/main";
+import { showNotification } from "@/components/modals/notification";
 
 const mainStore = useMainStore();
 const currentUser = mainStore.currentUser;
@@ -22,9 +11,13 @@ const currentUser = mainStore.currentUser;
 const socket = io("http://localhost:3000");
 
 onMounted(() => {
-  socket.emit("usersActifs", currentUser);
-	socket.on("usersActifs", (user) => {
-		if (user._id === currentUser._id) return;
+	socket.emit("userLogged", currentUser);
+
+	socket.on("notification", (message) => {
+		showNotification({
+			message,
+			closingTime: 5000,
+		});
 	});
 });
 
@@ -32,3 +25,7 @@ onBeforeUnmount(() => {
 	socket.close();
 });
 </script>
+
+<template>
+	<RouterView />
+</template>

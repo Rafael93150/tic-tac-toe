@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { ref } from "vue";
 import {
 	Dialog,
 	DialogPanel,
@@ -13,6 +13,7 @@ import {
 	UserIcon,
 	XMarkIcon,
 	ArrowRightStartOnRectangleIcon,
+	BellAlertIcon,
 } from "@heroicons/vue/24/outline";
 
 import { useRouter } from "vue-router";
@@ -34,13 +35,17 @@ const navigation = [
 		icon: ChatBubbleLeftRightIcon,
 		current: router.currentRoute.value.path === "/chat",
 	},
-	{
+];
+
+// add notifications if user is admin
+if (user.role === "USER_ROLE") {
+	navigation.push({
 		name: "Notifications",
 		href: "/notifications",
-		icon: ChatBubbleLeftRightIcon,
+		icon: BellAlertIcon,
 		current: router.currentRoute.value.path === "/notifications",
-	},
-];
+	});
+}
 
 const logout = () => {
 	localStorage.removeItem("token");
@@ -121,11 +126,6 @@ const sidebarOpen = ref(false);
 									to="/"
 									class="flex h-16 shrink-0 items-center mt-4"
 								>
-									<!-- <img
-                    class="h-8 w-auto"
-                    src="/images/sneakpeak_logo_white.png"
-                    alt="Sneak Peak"
-                  /> -->
 								</RouterLink>
 								<nav class="flex flex-1 flex-col">
 									<ul
@@ -222,7 +222,7 @@ const sidebarOpen = ref(false);
 								/>
 								{{ user.username }}
 							</a>
-							
+
 							<a
 								type="button"
 								@click="logout"

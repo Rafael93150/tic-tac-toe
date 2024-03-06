@@ -9,20 +9,24 @@ app.set("port", PORT);
 
 const server = http.createServer(app);
 const io = new Server(server, {
-    cors: {
-        origin: "http://localhost:5173",
-        methods: ["GET", "POST"],
-        allowedHeaders: ["Authorization"],
-        credentials: true,
-    },
+	cors: {
+		origin: "http://localhost:5173",
+		methods: ["GET", "POST"],
+		allowedHeaders: ["Authorization"],
+		credentials: true,
+	},
 });
 
+let usersLoggedInChat = [];
 let usersLogged = [];
-let usersActifs = [];
 
 io.on("connection", (socket) => {
-	socket.on("joinChat", (user) => {
+	socket.on("userLogged", (user) => {
 		usersLogged.push({ ...user, socketId: socket.id });
+	});
+
+	socket.on("joinChat", (user) => {
+		usersLoggedInChat.push({ ...user, socketId: socket.id });
 		io.emit("joinChat", user);
 	});
 
@@ -66,14 +70,6 @@ io.on("connection", (socket) => {
 		}
 	});
 
-	socket.on("disconnect", () => {
-		const userDisconnected = usersLogged.find(
-			(user) => user.socketId === socket.id
-		);
-		usersLogged = usersLogged.filter((user) => user.socketId !== socket.id);
-		io.emit("leaveChat", userDisconnected);
-	});
-
 	socket.on("userJoinedGame", ({ roomId, user }) => {
 		io.emit("userJoinedGame", { roomId, user });
 	});
@@ -86,11 +82,32 @@ io.on("connection", (socket) => {
 		const room = await play({ userId, row, col });
 		io.emit("playerPlayed", room);
 	});
+
+	socket.on("notification", ({ message, recipient }) => {
+		if (recipient) {
+			const user = usersLogged.find((user) => user._id === recipient);
+			io.to(user.socketId).emit("notification", message);
+		} else {
+			io.emit("notification", message);
+		}
+	});
+
+	socket.on("disconnect", () => {
+		const userDisconnected = usersLoggedInChat.find(
+			(user) => user.socketId === socket.id
+		);
+		usersLogged.splice(usersLogged.indexOf(socket.id), 1);
+		usersLoggedInChat = usersLoggedInChat.filter(
+			(user) => user.socketId !== socket.id
+		);
+		io.emit("leaveChat", userDisconnected);
+	});
 });
 
 app.set("socketio", io);
 
-export { usersActifs, io };
+export { usersLogged, io };
+
 server.listen(PORT, () => {
-    console.log(`Listening on port ${PORT}`);
+	console.log(`Listening on port ${PORT}`);
 });
