@@ -24,6 +24,12 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			default: "#3f51b5",
 		},
+		authentificationToken: {
+			type: String,
+		},
+		confirmed: {
+			type: Boolean,
+		},
 	},
 	{
 		timestamps: true,

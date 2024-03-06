@@ -15,13 +15,6 @@ const state = reactive({
 const router = useRouter();
 
 const submit = async () => {
-  // const result = userSchema.safeParse(state.form);
-
-  // if (!result.success) {
-  //   state.errors = JSON.parse(result.error.message)[0].message;
-  //   return;
-  // }
-
   try {
     await axiosInstance.post("/auth/register", {
       username: state.username,

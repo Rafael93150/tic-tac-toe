@@ -1,6 +1,6 @@
 <script setup>
 import { reactive } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import axiosInstance from "@/utils/axiosInstance";
 import { useMainStore } from "@/stores/main";
 import GuestLayout from "@/layouts/GuestLayout.vue";
@@ -11,7 +11,15 @@ const form = reactive({
   error: "",
 });
 
+const state = reactive({
+  errors: [],
+});
+
 const router = useRouter();
+const route = useRoute();
+
+const isRegistered = route.query.registered === 'true'
+const isConfirmed = route.query.confirmed === 'true'
 
 const submit = () => {
   axiosInstance
@@ -32,6 +40,19 @@ const submit = () => {
       form.error = "Une erreur s'est produite lors de la connexion";
     });
 };
+
+if (route.query.email && route.query.authentificationToken) {
+  try {
+    axiosInstance.post("/auth/confirm", {
+      email: route.query.email,
+      authentificationToken: route.query.authentificationToken,
+    }).then(() => {
+      router.push("/login?confirmed=true");
+    });
+  } catch (error) {
+    state.errors = error.response.data.errors;
+  }
+}
 </script>
 
 <template>
@@ -57,6 +78,12 @@ const submit = () => {
           </p>
         </div>
         <div>
+          <div v-if="isRegistered && !state.errors.length" class="text-green-600 my-5">
+            Vous avez bien été inscrit. Veuillez confirmer votre email puis vous connecter.
+          </div>
+          <div v-if="isConfirmed && !state.errors.length" class="text-green-600 my-5">
+            Votre email a bien été confirmé. Vous pouvez maintenant vous connecter.
+          </div>
           <div class="my-5">
             <small v-if="form.error" class="text-red-600">{{
               form.error

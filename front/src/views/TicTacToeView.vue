@@ -76,6 +76,12 @@ const isGameStarted = computed(() => {
 	return state.currentGame && state.currentGame.players.length === 2;
 });
 
+const playerTurn = computed(() => {
+	return state.currentGame.players.find(
+		(player) => player._id === state.currentGame.activePlayer
+	);
+});
+
 const handleCellClicked = (row, col) => {
 	socket.emit("playerPlayed", {
 		userId: mainStore.currentUser._id,
@@ -116,6 +122,12 @@ socket.on("playerPlayed", (room) => {
 							class="my-4"
 							:players="state.currentGame.players"
 						/>
+						<div class="text-2xl font-bold mb-4">
+							Au tour de 
+							<span :style="{ color: playerTurn.color }" class="bg-gray-100 px-2 py-1 rounded-md">
+								{{ playerTurn.username }}
+							</span>
+						</div>
 						<GameBoard
 							class="my-4"
 							:board="state.currentGame.gameBoard"
@@ -124,6 +136,12 @@ socket.on("playerPlayed", (room) => {
 						/>
 					</div>
 					<div v-else class="flex flex-col items-center">
+						<p class="text-2xl font-bold mb-4">
+							Code de la partie:
+							<span class="text-indigo-600 bg-indigo-100 px-2 py-1 rounded-md ml-2">
+								{{ state.currentGame.roomId }} 
+							</span>
+						</p>
 						<LookingForPlayer />
 					</div>
 
