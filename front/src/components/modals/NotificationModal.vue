@@ -1,7 +1,7 @@
 <template>
 	<transition name="fade-in">
 		<div
-			class="modal bg-white rounded-lg shadow-lg fixed top-5 right-5 z-50 border flex flex-col max-w-sm"
+			class="modal bg-white rounded-lg shadow-lg fixed top-5 right-5 z-50 border flex flex-col max-w-sm min-w-60"
 		>
 			<div class="flex flex-row items-center justify-start p-2">
 				<InformationCircleIcon class="h-5 w-5 text-indigo-600" />

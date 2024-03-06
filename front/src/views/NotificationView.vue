@@ -56,12 +56,12 @@ const sendNotification = async () => {
 							<label
 								for="message"
 								class="block text-sm font-medium text-gray-700"
-								>Choisir un utilisateur</label
+								>Utilisateur(s)</label
 							>
 							<select
 								v-model="state.selectedUser"
 								id="user"
-								class="mt-1 p-2 border border-gray-300 rounded-md w-full appearance-none"
+								class="mt-1 p-2 border border-gray-300 rounded-md w-full appearance-none text-gray-700 text-sm"
 							>
 								<option value="null" selected>
 									Tous les utilisateurs connectés
@@ -84,7 +84,7 @@ const sendNotification = async () => {
 							id="message"
 							v-model="state.message"
 							placeholder="Entrez votre message ici"
-							class="mt-1 p-2 border border-gray-300 rounded-md w-full font-xs text-gray-700"
+							class="mt-1 p-2 border border-gray-300 rounded-md w-full text-sm text-gray-700"
 						></textarea>
 
 						<button
