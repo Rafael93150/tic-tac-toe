@@ -80,8 +80,17 @@ io.on("connection", (socket) => {
 	});
 
 	socket.on("playerPlayed", async ({ userId, row, col }) => {
-		const room = await play({ userId, row, col });
-		io.emit("playerPlayed", room);
+		try {
+			const room = await play({ userId, row, col });
+			io.emit("playerPlayed", room);
+		} catch (err) {
+			// const userToNotify = usersLogged.find(
+			// 	(user) => user._id === userId
+			// );
+			// if (userToNotify)
+			// 	io.to(userToNotify.socketId).emit("error", err.message);
+			// else console.log(err.message)
+		}
 	});
 
 	socket.on("notification", ({ message, recipient }) => {
@@ -102,7 +111,9 @@ io.on("connection", (socket) => {
 		);
 		io.emit("leaveChat", userDisconnectedFromChat);
 
-		const userIndex = usersLogged.findIndex(user => user.socketId === socket.id);
+		const userIndex = usersLogged.findIndex(
+			(user) => user.socketId === socket.id
+		);
 		if (userIndex !== -1) {
 			usersLogged.splice(userIndex, 1);
 		}

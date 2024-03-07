@@ -30,6 +30,15 @@ onMounted(() => {
 			});
 		}
 	});
+
+	socket.on("error", (error) => {
+		showNotification({
+			type: 'error',
+			message: error,
+			closingTime: 3000,
+		});
+	
+	});
 });
 
 onBeforeUnmount(() => {

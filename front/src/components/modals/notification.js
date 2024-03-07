@@ -2,7 +2,7 @@ import { createApp, ref } from "vue";
 import NotificationModal from "@/components/modals/NotificationModal.vue";
 
 export function showNotification(props) {
-	const { message, closingTime, showCloseButton, closeOnOutsideClick } =
+	const { type, message, closingTime, showCloseButton, closeOnOutsideClick } =
 		props;
 
 	const closeModal = () => {
@@ -36,7 +36,9 @@ export function showNotification(props) {
 	onMounted();
 
 	const app = createApp(NotificationModal, {
+		type,
 		message,
+		closingTime,
 		showCloseButton,
         onClose: () => closeModal()
 	});

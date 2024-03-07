@@ -7,10 +7,10 @@ export const play = async ({ userId, row, col }) => {
 		gameOver: false,
 	}).populate("players", "username color");
 
-	if (!room) return { error: "Room not found" };
+	if (!room) throw new Error("Partie non trouvée")
 	if (room.activePlayer.toString() !== userId)
-		return { error: "It's not your turn" };
-	if (room.gameBoard[row][col] !== "") return { error: "Invalid move" };
+		throw new Error("Ce n'est pas à ton tour de jouer");
+	if (room.gameBoard[row][col] !== "") throw new Error("Case déjà jouée");
 	room.gameBoard[row][col] =
 		userId === room.players[0]._id.toString() ? "X" : "O";
 	const gameOver = isGameOver(room.gameBoard);

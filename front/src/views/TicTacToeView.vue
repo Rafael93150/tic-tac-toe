@@ -10,6 +10,7 @@ import io from "socket.io-client";
 import PlayersHeader from "@/components/game/PlayersHeader.vue";
 import LookingForPlayer from "@/components/game/LookingForPlayer.vue";
 import LeaveButton from "@/components/game/LeaveButton.vue";
+import Loading from "@/components/Loading.vue";
 
 const mainStore = useMainStore();
 const router = useRouter();
@@ -17,6 +18,7 @@ const socket = io("http://localhost:3000");
 
 const state = reactive({
 	currentGame: null,
+	loading: true,
 });
 
 const handleGameCreated = (game) => {
@@ -25,7 +27,7 @@ const handleGameCreated = (game) => {
 };
 
 const leaveGame = () => {
-	mainStore.leaveGame();
+	if (!isGameFinished) mainStore.leaveGame();
 	if (state.currentGame && state.currentGame.players.length > 1) {
 		socket.emit("userLeftGame", {
 			roomId: state.currentGame.roomId,
@@ -47,10 +49,19 @@ const handleGameJoined = (game) => {
 
 onMounted(async () => {
 	state.currentGame = await mainStore.fetchCurrentGame();
+	state.loading = false;
 	if (state.currentGame) {
 		router.push(`/game/${state.currentGame.roomId}`);
 	} else {
 		router.push("/");
+	}
+});
+
+const winner = computed(() => {
+	if (state.currentGame && state.currentGame.winner) {
+		return state.currentGame.players.find(
+			(player) => player._id === state.currentGame.winner
+		);
 	}
 });
 
@@ -72,6 +83,11 @@ const isGameStarted = computed(() => {
 	return state.currentGame && state.currentGame.players.length === 2;
 });
 
+const isGameFinished = computed(() => {
+	if (state.currentGame && state.currentGame.winner) return true;
+	return false;
+});
+
 const playerTurn = computed(() => {
 	return state.currentGame.players.find(
 		(player) => player._id === state.currentGame.activePlayer
@@ -87,26 +103,28 @@ const handleCellClicked = (row, col) => {
 };
 
 socket.on("playerPlayed", (room) => {
-	if (room.error) {
-		alert(room.error);
-		return;
-	}
 	state.currentGame = room;
-	if (room.winner) {
-		const winner = room.players.find(
-			(player) => player._id === room.winner
-		);
-		setTimeout(() => {
-			alert(`${winner.username} a gagné!`);
-		}, 50);
-		clearTimeout();
-	}
+	// if (room.winner) {
+	// 	const winner = room.players.find(
+	// 		(player) => player._id === room.winner
+	// 	);
+	// 	setTimeout(() => {
+	// 		alert(`${winner.username} a gagné!`);
+	// 	}, 50);
+	// 	clearTimeout();
+	// }
 });
 </script>
 
 <template>
 	<LayoutAuthenticated>
 		<div class="vh100">
+			<div
+				v-if="state.loading"
+				class="flex items-center justify-center h-full"
+			>
+				<Loading />
+			</div>
 			<!-- Game page -->
 			<div v-if="state.currentGame" class="flex flex-row w-full h-full">
 				<div class="flex-1 flex flex-col items-center justify-center">
@@ -118,9 +136,24 @@ socket.on("playerPlayed", (room) => {
 							class="my-4"
 							:players="state.currentGame.players"
 						/>
-						<div class="text-2xl font-bold mb-4">
-							Au tour de 
-							<span :style="{ color: playerTurn.color }" class="bg-gray-100 px-2 py-1 rounded-md">
+						<div v-if="isGameFinished">
+							<p class="text-2xl font-bold mb-4">
+								<span
+									:style="{
+										color: winner.color,
+									}"
+								>
+									{{ winner.username }}
+								</span>
+								a gagné!
+							</p>
+						</div>
+						<div v-else class="text-2xl font-bold mb-4">
+							Au tour de
+							<span
+								:style="{ color: playerTurn.color }"
+								class="bg-gray-100 px-2 py-1 rounded-md"
+							>
 								{{ playerTurn.username }}
 							</span>
 						</div>
@@ -134,8 +167,10 @@ socket.on("playerPlayed", (room) => {
 					<div v-else class="flex flex-col items-center">
 						<p class="text-2xl font-bold mb-4">
 							Code de la partie:
-							<span class="text-indigo-600 bg-indigo-100 px-2 py-1 rounded-md ml-2">
-								{{ state.currentGame.roomId }} 
+							<span
+								class="text-indigo-600 bg-indigo-100 px-2 py-1 rounded-md ml-2"
+							>
+								{{ state.currentGame.roomId }}
 							</span>
 						</p>
 						<LookingForPlayer />
@@ -143,6 +178,7 @@ socket.on("playerPlayed", (room) => {
 
 					<LeaveButton
 						:isGameStarted="isGameStarted"
+						:isGameFinished="isGameFinished"
 						@leave-game="leaveGame"
 					/>
 				</div>

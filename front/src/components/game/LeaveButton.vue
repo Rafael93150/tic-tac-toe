@@ -1,6 +1,7 @@
 <script setup>
 const props = defineProps({
 	isGameStarted: Boolean,
+	isGameFinished: Boolean,
 });
 
 const emit = defineEmits(["leave-game"]);
@@ -11,6 +12,12 @@ const emit = defineEmits(["leave-game"]);
 		class="px-4 py-2 text-white bg-red-600 rounded-md hover:bg-red-500"
 		@click="emit('leave-game')"
 	>
-		{{ props.isGameStarted ? "Abandonner" : "Annuler" }}
+		{{
+			props.isGameFinished
+				? "Revenir à l'accueil"
+				: props.isGameStarted
+				? "Abandonner la partie"
+				: "Annuler la recherche"
+		}}
 	</button>
 </template>

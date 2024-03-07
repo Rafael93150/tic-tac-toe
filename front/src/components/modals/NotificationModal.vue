@@ -4,8 +4,22 @@
 			class="modal bg-white rounded-lg shadow-lg fixed top-5 right-5 z-50 border flex flex-col max-w-sm min-w-60"
 		>
 			<div class="flex flex-row items-center justify-start p-2">
-				<InformationCircleIcon class="h-5 w-5 text-indigo-600" />
-				<h1 class="text-base text-indigo-600 ml-2">Notification</h1>
+				<InformationCircleIcon
+					class="h-5 w-5"
+					:class="{
+						'text-indigo-600': props.type === 'info',
+						'text-red-500': props.type === 'error',
+					}"
+				/>
+				<h1
+					class="text-base ml-2"
+					:class="{
+						'text-indigo-600': props.type === 'info',
+						'text-red-500': props.type === 'error',
+					}"
+				>
+					{{ props.type === "info" ? "Notification" : "Erreur" }}
+				</h1>
 				<button
 					v-if="props.showCloseButton"
 					@click="emit('close')"
@@ -19,7 +33,10 @@
 				{{ message }}
 			</p>
 			<div
-				class="timer h-1 bg-indigo-600 rounded-b-lg w-full"
+				class="timer h-1 rounded-b-lg w-full" :class="{
+					'bg-indigo-600': props.type === 'info',
+					'bg-red-500': props.type === 'error',
+				}"
 				:style="{ transition: `width ${props.closingTime}ms linear` }"
 			></div>
 		</div>
@@ -30,6 +47,10 @@
 import { InformationCircleIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 import { defineProps, defineEmits, ref } from "vue";
 const props = defineProps({
+	type: {
+		type: String,
+		default: "info",
+	},
 	message: {
 		type: String,
 		default: "Vous avez reçu une notification",
