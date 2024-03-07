@@ -23,7 +23,7 @@ const usersLogged = [];
 io.on("connection", (socket) => {
 	socket.on("userLogged", (user) => {
 		usersLogged.push({ ...user, socketId: socket.id });
-		console.log(usersLogged);
+		// console.log(usersLogged);
 	});
 
 	socket.on("joinChat", (user) => {
