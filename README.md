@@ -1,8 +1,8 @@
 # Projet Morpion & Chat en temps réel
 
 Créé par:
-- Rafael93150, alias TAVARES DE PINHO Rafael
-- asma1mokeddes, alias MOKEDDES Asma
+- rafael-tdp, alias TAVARES DE PINHO Rafael
+- asma1mokeddes / asma12a, alias MOKEDDES Asma
 - Taslima-Ahamed-Mze, alias TASLIMA Ahamed Mze
 - Bass913, alias DIKIADI NDONGALA VUANZA Bastien
 
@@ -17,7 +17,7 @@ Mot de passe: test
 ## Setup le projet:
 
 1 - Clonez ce projet à partir du référentiel GitHub en utilisant la commande suivante :
-git clone https://github.com/Rafael93150/hackathon.git
+git clone https://github.com/rafael-tdp/tic-tac-toe.git
 
 2 - Installer les Dépendances:
 Assurez-vous que vous avez Node.js et npm installés sur votre machine.
