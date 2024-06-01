@@ -23,6 +23,7 @@ Toutes les fonctionnalités obligatoires ont été implémentées :
 - Discussion instantanée en temps réel avec notifications de connexion/déconnexion
 - Jeu du morpion avec mise à jour en temps réel et messagerie
 - Notifications administratives en temps réel
+- Mise en production du site
 
 ## Setup le projet:
 
@@ -47,3 +48,7 @@ Toutes les fonctionnalités obligatoires ont été implémentées :
 
 5. Connectez-vous:
    Utilisez le compte pré-créé mentionné ci-dessus pour vous connecter à l'application.
+
+## Accéder à la Version de Production:
+La version de production du site est accessible à l'URL suivante :
+https://tic-tac-toe-0dpa.onrender.com
