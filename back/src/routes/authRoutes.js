@@ -1,8 +1,9 @@
 import User from "../models/user.js";
+import Token from "../models/token.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { profileColors } from "../lib/colors.js";
-import { sendEmailConfirmation } from "../services/emailService.js";
+import { sendEmailConfirmation, sendResetPasswordEmail } from "../services/emailService.js";
 import randomCharacters from "../lib/randomCharacters.js";
 
 export const register = async (req, res) => {
@@ -125,3 +126,72 @@ export const confirmEmail = async (req, res) => {
         });
     }
 }
+
+
+export const forgotPassword = async (req, res, next) => {
+    try {
+        const { email } = req.body;
+        const user = await User.findOne({
+            email
+        });
+        if (!user) {
+            const error = new Error('Could not find user.');
+            error.statusCode = 404;
+            throw error;
+        }
+
+        let token = await Token.findOne({
+            userId: user._id
+        });
+        if (!token) {
+            token = new Token({
+                token: require('crypto').randomBytes(32).toString('hex'),
+                userId: user._id,
+            });
+            await token.save();
+        }
+
+        await sendResetPasswordEmail(
+            email,
+            token.token
+        );
+
+        res.cookie(process.env.JWT_RESET_PASSWORD, token.token, {
+            // secure: true,
+            signed: true,
+            httpOnly: true,
+        });
+
+    } catch (err) {
+        if (!err.statusCode) {
+            err.statusCode = 500;
+        }
+        next(err);
+    }
+};
+
+export const changePassword = async (req, res, next) => {
+    try {
+        const cookieToken = req.signedCookies[process.env.JWT_RESET_PASSWORD];
+
+        const token = await Token.findOne({ token: cookieToken });
+
+        if (!token) {
+            const error = new Error('Could not find token.');
+            error.statusCode = 404;
+            throw error;
+        }
+        const user = await User.findById(token.userId);
+        const hashedPw = await bcrypt.hash(req.body.newPassword, 12);
+        await User.updateOne({ _id: user._id }, { $set: { password: hashedPw } })
+
+        await token.deleteOne();
+        res.clearCookie(process.env.JWT_RESET_PASSWORD);
+        res.sendStatus(200);
+    } catch (err) {
+        if (!err.statusCode) {
+            err.statusCode = 500;
+        }
+        next(err);
+    }
+};

@@ -36,6 +36,14 @@ const routes = [
 	},
 	{
 		meta: {
+			title: "Mot de passe oublié",
+		},
+		path: "/forgot-password",
+		name: "forgot-password",
+		component: () => import("@/views/ForgotPasswordView.vue"),
+	},
+	{
+		meta: {
 			title: "Morpion",
 		},
 		path: "/",

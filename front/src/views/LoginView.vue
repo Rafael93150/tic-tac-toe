@@ -128,11 +128,11 @@ if (route.query.email && route.query.authentificationToken) {
 
               <div class="flex items-center justify-end">
                 <div class="text-sm leading-6">
-                  <a
-                    href="password-reset"
-                    class="font-semibold text-indigo-500 hover:text-indigo-700"
-                    >Mot de passe oublié ?</a
-                  >
+                  <RouterLink
+              to="forgot-password"
+              class="font-semibold text-indigo-500 hover:text-indigo-700"
+              >Mot de passe oublié ?</RouterLink
+            >
                 </div>
               </div>
 
