@@ -9,7 +9,7 @@ import { useMainStore } from "@/stores/main";
 import io from "socket.io-client";
 
 const mainStore = useMainStore();
-const socket = io("http://localhost:3000");
+const socket = io("https://tic-tac-toe-server-thgx.onrender.com");
 
 const state = reactive({
 	items: [] as { message: any; notification: any }[],

@@ -8,7 +8,7 @@ import { showNotification } from "@/components/modals/notification";
 const mainStore = useMainStore();
 const currentUser = mainStore.currentUser;
 
-const socket = io("http://localhost:3000");
+const socket = io("https://tic-tac-toe-server-thgx.onrender.com");
 
 onMounted(() => {
 	socket.emit("userLogged", currentUser);

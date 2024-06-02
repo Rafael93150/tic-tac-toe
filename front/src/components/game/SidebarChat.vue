@@ -7,7 +7,7 @@ import { computed, reactive } from "vue";
 import axiosInstance from "@/utils/axiosInstance";
 
 const mainStore = useMainStore();
-const socket = io("http://localhost:3000");
+const socket = io("https://tic-tac-toe-server-thgx.onrender.com");
 
 const state = reactive({
 	messages: [],

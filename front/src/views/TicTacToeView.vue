@@ -14,7 +14,7 @@ import Loading from "@/components/Loading.vue";
 
 const mainStore = useMainStore();
 const router = useRouter();
-const socket = io("http://localhost:3000");
+const socket = io("https://tic-tac-toe-server-thgx.onrender.com");
 
 const state = reactive({
 	currentGame: null,

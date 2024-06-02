@@ -4,7 +4,7 @@ import LayoutAuthenticated from "@/layouts/LayoutAuthenticated.vue";
 import axiosInstance from "@/utils/axiosInstance";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:3000");
+const socket = io("https://tic-tac-toe-server-thgx.onrender.com");
 
 const state = reactive({
 	message: "",
