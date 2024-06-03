@@ -6,7 +6,7 @@ import GameStarter from "@/components/game/GameStarter.vue";
 import { useMainStore } from "@/stores/main";
 import { computed, onMounted, reactive } from "vue";
 import { useRouter } from "vue-router";
-import io from "socket.io-client";
+import socket from "@/config/socket";
 import PlayersHeader from "@/components/game/PlayersHeader.vue";
 import LookingForPlayer from "@/components/game/LookingForPlayer.vue";
 import LeaveButton from "@/components/game/LeaveButton.vue";
@@ -14,7 +14,6 @@ import Loading from "@/components/Loading.vue";
 
 const mainStore = useMainStore();
 const router = useRouter();
-const socket = io("https://tic-tac-toe-server-thgx.onrender.com");
 
 const state = reactive({
 	currentGame: null,

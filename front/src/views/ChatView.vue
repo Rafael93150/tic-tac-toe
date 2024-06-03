@@ -6,10 +6,9 @@ import LayoutAuthenticated from "@/layouts/LayoutAuthenticated.vue";
 import axiosInstance from "@/utils/axiosInstance";
 import { computed, onBeforeUnmount, onMounted, reactive } from "vue";
 import { useMainStore } from "@/stores/main";
-import io from "socket.io-client";
+import socket from "@/config/socket";
 
 const mainStore = useMainStore();
-const socket = io("https://tic-tac-toe-server-thgx.onrender.com");
 
 const state = reactive({
 	items: [] as { message: any; notification: any }[],

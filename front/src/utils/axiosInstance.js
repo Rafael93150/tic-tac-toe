@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-	baseURL: "https://tic-tac-toe-server-thgx.onrender.com",
+	baseURL: import.meta.env.VITE_HOST_API,
 });
 
 axiosInstance.interceptors.request.use(

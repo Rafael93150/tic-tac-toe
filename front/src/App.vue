@@ -1,14 +1,12 @@
 <script setup>
 import { RouterView } from "vue-router";
 import { onBeforeUnmount, onMounted, ref } from "vue";
-import io from "socket.io-client";
 import { useMainStore } from "@/stores/main";
 import { showNotification } from "@/components/modals/notification";
+import socket from "@/config/socket";
 
 const mainStore = useMainStore();
 const currentUser = mainStore.currentUser;
-
-const socket = io("https://tic-tac-toe-server-thgx.onrender.com");
 
 onMounted(() => {
 	socket.emit("userLogged", currentUser);
@@ -33,11 +31,10 @@ onMounted(() => {
 
 	socket.on("error", (error) => {
 		showNotification({
-			type: 'error',
+			type: "error",
 			message: error,
 			closingTime: 3000,
 		});
-	
 	});
 });
 
