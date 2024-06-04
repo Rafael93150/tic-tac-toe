@@ -6,7 +6,7 @@ import users from "./src/router/userRouter.js";
 import rooms from "./src/router/roomRouter.js";
 import games from "./src/router/gameRouter.js";
 import notifications from "./src/router/notificationRouter.js";
-import dotenv from "dotenv";
+import dotenv from "dotenv";    
 import cors from "cors";
 import { authMiddleware } from "./src/middlewares/authMiddleware.js";
 import removeDeletedUsersMessages from "./src/scripts/removeDeletedUsersMessages.js";

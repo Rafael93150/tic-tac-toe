@@ -44,26 +44,26 @@ export const sendEmailConfirmation = async (email, token) => {
 };
 
 export const sendResetPasswordEmail = async (email, passwordResetToken) => {
-    try {
-        const htmlTemplate = fs.readFileSync(
-            path.join(__dirname, "../templates/reset-password.html"),
-            "utf8"
-        );
+  try {
+    const htmlTemplate = fs.readFileSync(
+      path.join(__dirname, "../templates/reset-password.html"),
+      "utf8"
+    );
 
-        // TODO: replace with frontend url
-        const passwordResetLink = `${process.env.HOST_CLIENT}/password-reset?email=${email}&token=${passwordResetToken}`;
+    // TODO: replace with frontend url
+    const passwordResetLink = `${process.env.HOST_CLIENT}/reset-password?email=${email}&token=${passwordResetToken}`;
 
-        const subject = "Réinitialisation de votre mot de passe";
+    const subject = "Réinitialisation de votre mot de passe";
 
-        const template = htmlTemplate.replace(
-            "{{passwordResetLink}}",
-            passwordResetLink
-        );
+    const template = htmlTemplate.replace(
+      "{{passwordResetLink}}",
+      passwordResetLink
+    );
 
-        await sendEmail(email, subject, template);
+    await sendEmail(email, subject, template);
 
-        return true;
-    } catch (error) {
-        console.error(`Error sending reset password email : ${error.message}`);
-    }
+    return true;
+  } catch (error) {
+    console.error(`Error sending reset password email : ${error.message}`);
+  }
 }

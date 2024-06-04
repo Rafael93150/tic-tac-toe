@@ -11,7 +11,7 @@ router.post(
     forgotPassword,
 );
 router.post(
-    '/reset-password',
+    '/reset-password/:token',
     changePassword,
 );
 

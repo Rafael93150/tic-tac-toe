@@ -1,4 +1,4 @@
-import { createApp, ref } from "vue";
+import { createApp } from "vue";
 import NotificationModal from "@/components/modals/NotificationModal.vue";
 
 export function showNotification(props) {
@@ -40,7 +40,7 @@ export function showNotification(props) {
 		message,
 		closingTime,
 		showCloseButton,
-        onClose: () => closeModal()
+		onClose: () => closeModal()
 	});
 
 	const notificationContainer = document.createElement("div");

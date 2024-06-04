@@ -44,6 +44,14 @@ const routes = [
 	},
 	{
 		meta: {
+			title: "Réinitialisation du mot de passe",
+		},
+		path: "/reset-password",
+		name: "reset-password",
+		component: () => import("@/views/ResetPasswordView.vue"),
+	},
+	{
+		meta: {
 			title: "Morpion",
 		},
 		path: "/",
@@ -77,11 +85,19 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-	if (to.path !== "/login" && to.path !== "/register" && !isAuthenticated()) {
+	if (to.name === 'reset-password') {
+		const { email, token } = to.query;
+		if (!email || !token) {
+			next({ name: 'login' });
+		} else {
+			next();
+		}
+	} else if (to.path !== "/login" && to.path !== "/register" && to.path !== "/forgot-password" && !isAuthenticated()) {
 		next({ name: "login" });
 	} else {
 		next();
 	}
 });
+
 
 export default router;

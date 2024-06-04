@@ -1,6 +1,7 @@
 import User from "../models/user.js";
 import Token from "../models/token.js";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 import bcrypt from "bcrypt";
 import { profileColors } from "../lib/colors.js";
 import { sendEmailConfirmation, sendResetPasswordEmail } from "../services/emailService.js";
@@ -145,7 +146,7 @@ export const forgotPassword = async (req, res, next) => {
         });
         if (!token) {
             token = new Token({
-                token: require('crypto').randomBytes(32).toString('hex'),
+                token: crypto.randomBytes(32).toString('hex'),
                 userId: user._id,
             });
             await token.save();
@@ -155,12 +156,6 @@ export const forgotPassword = async (req, res, next) => {
             email,
             token.token
         );
-
-        res.cookie(process.env.JWT_RESET_PASSWORD, token.token, {
-            // secure: true,
-            signed: true,
-            httpOnly: true,
-        });
 
     } catch (err) {
         if (!err.statusCode) {
@@ -172,9 +167,9 @@ export const forgotPassword = async (req, res, next) => {
 
 export const changePassword = async (req, res, next) => {
     try {
-        const cookieToken = req.signedCookies[process.env.JWT_RESET_PASSWORD];
+        const tokenParams = req.params.token;
 
-        const token = await Token.findOne({ token: cookieToken });
+        const token = await Token.findOne({ token: tokenParams });
 
         if (!token) {
             const error = new Error('Could not find token.');
@@ -184,9 +179,7 @@ export const changePassword = async (req, res, next) => {
         const user = await User.findById(token.userId);
         const hashedPw = await bcrypt.hash(req.body.newPassword, 12);
         await User.updateOne({ _id: user._id }, { $set: { password: hashedPw } })
-
         await token.deleteOne();
-        res.clearCookie(process.env.JWT_RESET_PASSWORD);
         res.sendStatus(200);
     } catch (err) {
         if (!err.statusCode) {
