@@ -8,17 +8,21 @@ import games from "./src/router/gameRouter.js";
 import notifications from "./src/router/notificationRouter.js";
 import dotenv from "dotenv";
 import cors from "cors";
-import {
-    authMiddleware,
-    adminMiddleware,
-} from "./src/middlewares/authMiddleware.js";
+import { authMiddleware } from "./src/middlewares/authMiddleware.js";
 import removeDeletedUsersMessages from "./src/scripts/removeDeletedUsersMessages.js";
 
 const app = express();
 dotenv.config();
-app.use(cors());
 
+app.use(express.urlencoded({ extended: true, limit: "16mb" }));
 app.use(express.json());
+
+const corsOptions = {
+    origin: process.env.HOST_CLIENT,
+    credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 app.use("/auth", auth);
 app.use("/messages", authMiddleware, messages);

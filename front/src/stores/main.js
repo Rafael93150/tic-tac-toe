@@ -3,7 +3,7 @@ import axiosInstance from "@/utils/axiosInstance";
 
 export const useMainStore = defineStore("main", {
 	state: () => {
-		const user = JSON.parse(localStorage.getItem("user"));
+		const user = JSON.parse(localStorage.getItem("user") || "{}");
 		const currentGame = null;
 		return {
 			currentUser: { ...user, response: null },

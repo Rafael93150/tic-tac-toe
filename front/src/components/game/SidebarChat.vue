@@ -2,12 +2,11 @@
 import GameMessage from "@/components/game/GameMessage.vue";
 import ChatInput from "@/components/chat/ChatInput.vue";
 import { useMainStore } from "@/stores/main";
-import io from "socket.io-client";
 import { computed, reactive } from "vue";
 import axiosInstance from "@/utils/axiosInstance";
+import socket from "@/config/socket";
 
 const mainStore = useMainStore();
-const socket = io("https://tic-tac-toe-server-thgx.onrender.com");
 
 const state = reactive({
 	messages: [],

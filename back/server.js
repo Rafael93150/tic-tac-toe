@@ -3,6 +3,8 @@ import http from "http";
 import { Server } from "socket.io";
 import Message from "./src/models/message.js";
 import { play } from "./src/services/gameService.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 app.set("port", PORT);
