@@ -26,7 +26,7 @@ const handleGameCreated = (game) => {
 };
 
 const leaveGame = () => {
-	if (!isGameFinished) mainStore.leaveGame();
+	mainStore.leaveGame();
 	if (state.currentGame && state.currentGame.players.length > 1) {
 		socket.emit("userLeftGame", {
 			roomId: state.currentGame.roomId,
@@ -38,12 +38,12 @@ const leaveGame = () => {
 };
 
 const handleGameJoined = (game) => {
-	router.push(`/game/${game.roomId}`);
 	state.currentGame = game;
 	socket.emit("userJoinedGame", {
 		room: game,
 		user: mainStore.currentUser,
 	});
+	router.push(`/game/${game.roomId}`);
 };
 
 onMounted(async () => {
@@ -76,6 +76,7 @@ socket.on("userLeftGame", ({ roomId, user }) => {
 	)
 		return;
 	state.currentGame = null;
+	router.push('/');
 });
 
 const isGameStarted = computed(() => {
