@@ -88,11 +88,12 @@ const submit = async () => {
     }
 
     try {
-        await axiosInstance.post("/auth/reset-password", {
+        const token = router.currentRoute.value.query.token
+        await axiosInstance.post("/auth/reset-password/" + token, {
             newPassword: state.password,
         });
 
-        router.push("/login?registered=true");
+        router.push("/login?resetPassword=true");
     } catch (error) {
         if (error.response) {
             if (error.response.status === 500) {

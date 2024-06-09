@@ -7,15 +7,19 @@ import axiosInstance from "@/utils/axiosInstance";
 
 // import { userSchema } from "@/utils/validations/userSchema";
 
-const state = reactive({ email: "", error: "" });
+const state = reactive({ email: "", error: "", success: ""});
 
 const router = useRouter();
 
 const submit = async () => {
   try {
-    await axiosInstance.post("/auth/forgot-password", {
+    const response = await axiosInstance.post("/auth/forgot-password", {
       email: state.email,
     });
+
+    if (response.status === 200) {
+      state.success = "Un email de réinitialisation de mot de passe a été envoyé à votre adresse email.";
+    }
   } catch (error) {
     if (error.response) {
       if (error.response.status === 500) {
@@ -48,6 +52,7 @@ const submit = async () => {
         <div>
           <div class="my-5">
             <small v-if="state.error && state.error.length" class="text-red-600">{{ state.error }}</small>
+            <small v-if="state.success && state.success.length" class="text-green-600">{{ state.success }}</small>
           </div>
 
           <div>

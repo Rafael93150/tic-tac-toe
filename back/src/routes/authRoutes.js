@@ -156,6 +156,7 @@ export const forgotPassword = async (req, res, next) => {
             email,
             token.token
         );
+        res.sendStatus(200);
 
     } catch (err) {
         if (!err.statusCode) {

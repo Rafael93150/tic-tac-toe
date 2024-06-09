@@ -20,6 +20,7 @@ const route = useRoute();
 
 const isRegistered = route.query.registered === 'true'
 const isConfirmed = route.query.confirmed === 'true'
+const isResetPassword = route.query.resetPassword === 'true'
 
 const submit = () => {
   axiosInstance
@@ -76,6 +77,9 @@ if (route.query.email && route.query.authentificationToken) {
           </div>
           <div v-if="isConfirmed && !state.errors.length" class="text-green-600 my-5">
             Votre email a bien été confirmé. Vous pouvez maintenant vous connecter.
+          </div>
+          <div v-if="isResetPassword" class="text-green-600 my-5">
+            Votre mot de passe a bien été réinitialisé. Vous pouvez maintenant vous connecter.
           </div>
           <div class="my-5">
             <small v-if="form.error" class="text-red-600">{{
