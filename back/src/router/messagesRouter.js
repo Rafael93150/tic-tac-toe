@@ -1,17 +1,17 @@
 import express from "express";
 const router = express.Router();
 import {
-    getAllMessages,
+    getChatMessages,
+    getRoomMessages,
     getMessageById,
     createMessage,
     updateMessage,
     deleteMessage,
-    getAllMessagesWithUserDetails,
     getMessageByIdWithUserDetails
 } from "../routes/messagesRoutes.js";
 
-router.get("/", getAllMessages);
-router.get("/populated", getAllMessagesWithUserDetails);
+router.get("/", getChatMessages);
+router.get("/room/:roomId", getRoomMessages);
 router.get("/:messageId", getMessageById);
 router.get("/:messageId/populated", getMessageByIdWithUserDetails);
 router.post("/", createMessage);
